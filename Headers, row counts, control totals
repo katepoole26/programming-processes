@@ -1,0 +1,83 @@
+##THIS SCRIPT WILL RETURN:
+#   THE FIRST ROW OF EACH FILE IN FOLDER (HEADERS)
+#   THE ROW COUNT OF EACH FILE IN FOLDER
+###############################################################
+
+#IMPORT EXTENSIONS#
+import os
+import posixpath
+import timeit
+import pandas as pd
+import re
+import numpy as np
+from collections import Counter
+import xlrd
+import sqlalchemy
+
+#DEFINE FUNCTIONS#
+def set_parent_path(parent):
+    file_path = os.path.normpath(parent)
+    py_path = '//' + posixpath.join(*file_path.split('\\'))
+    return py_path
+
+def path_listing(clean):
+    lst = os.listdir(clean)
+    return lst
+
+def file_len(fname):
+    with open(fname) as f:
+        for k, l in enumerate(f):
+            pass
+    return k + 1
+
+#SET FOLDER PATH AND RUN FUNCTIONS#
+bcb_path = r'\\brg-DC-fs1.brg.local\DCDATA2\Cases\Active\Lilly Insulin Matters (17423)\Data\Received from Client\Copay Coupon\2017_07_14\Unzipped'
+bcb_files = path_listing(bcb_path)
+
+headers = []
+for file in bcb_files:
+    filepath = bcb_path+'\\'+file
+    s = open(filepath)
+    for i,c in enumerate(s.readlines()):
+        if i ==0:
+            head = c
+            pass
+            file2 = open('File Headers.txt','a')
+            file2.write(file+':'+head)
+            file2.close()
+
+#for file in bcb_files:
+ #   for chunk in pd.read_csv(bcb_path+'\\'+file,sep=',',header = 0, chunksize = 1000000000, low_memory=False):
+  #      qty = chunk["Quantity"].sum()
+   #     print(file,qty)
+
+#import csv
+#for file in bcb_files:
+ #   with open(bcb_path+'\\'+file,'rb') as csvfile:
+  #      spamreader = csv.reader(csvfile,delimiter=',')
+   #     for row in spamreader:
+    #        print(row)
+
+import pandas
+import io
+
+for file in bcb_files:
+    my_csv = pd.read_csv(bcb_path+'\\'+file)
+    qty = my_csv.quantity
+
+#QUANTITY,DAYS_SUPPLY,NDC_NUMBER,INGRDNT_CST
+#PULL OUT ROW COUNTS#
+#for file in bcb_files:
+ #   s = open(file)
+  #  print(file, file_len(file))
+
+#GET CONTROL TOTALS
+
+#final = []
+#for file in bcb_files:
+ #   for chunk in pd.read_csv(file,sep='~', header=0, chunksize=100000, low_memory = False):
+  #      totqty = chunk["TOT_RX_QTY"].sum()
+   #     totrx  = chunk["TOT_PRSCRPTN"].sum()
+    #    out = [file,totqty,totrx]
+     #   final.append(out)
+      #  print(out)
